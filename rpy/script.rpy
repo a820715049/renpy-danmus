@@ -1,30 +1,40 @@
-﻿# 游戏的脚本可置于此文件中。
-
-# 声明此游戏使用的角色。颜色参数可使角色姓名着色。
-
-define e = Character("艾琳")
-
-
-# 游戏在此开始。
-
 label start:
+    python:
+        username = ""
+        password = ""
+        username = renpy.input("请输入用户名")
+        password = renpy.input("请输入密码")
+        import requests
+        import json
+        url = "http://122.51.92.130:3000/danmu/get"
+        danmuBase = requests.get(url=url, params={"username": username.encode('utf8'),
+                                                "password": password.encode('utf8')}, timeout=5).text
+        danmuBase = json.loads(danmuBase)
+        status = danmuBase["status"]
+        danmuBase = danmuBase["data"]
+        danmulist = []
+        for i in danmuBase:
+            list1 = [i, []]
+            for j in danmuBase[i]:
+                list1[1].append(j)
+            danmulist.append(list1)
 
-    # 显示一个背景。此处默认显示占位图，但您也可以在图片目录添加一个文件
-    # （命名为“bg room.png”或“bg room.jpg”）来显示。
+    "[status]"
+    $ a = 0
+    while(True):
+        $ b = danmulist[a]
+        hide screen showdanmu
+        show screen showdanmu(b[1])
+        "[b[0]]"
+        $ a += 1
+    window hide(None)
+    call screen showdanmu
 
-    scene bg room
-
-    # 显示角色立绘。此处使用了占位图，但您也可以在图片目录添加命名为
-    # “eileen happy.png”的文件来将其替换掉。
-
-    show eileen happy
-
-    # 此处显示各行对话。
-
-    e "您已创建一个新的 Ren'Py 游戏。"
-
-    e "当您完善了故事、图片和音乐之后，您就可以向全世界发布了！"
-
-    # 此处为游戏结尾。
-
-    return
+screen showdanmu(obj):
+    vbox:
+        spacing 10
+        text "[obj]":
+            color "#fff"
+        for i in obj:
+            text "[i]":
+                color "#fff"
