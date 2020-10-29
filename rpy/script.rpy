@@ -1,40 +1,11 @@
 label start:
-    python:
-        username = ""
-        password = ""
-        username = renpy.input("请输入用户名")
-        password = renpy.input("请输入密码")
-        import requests
-        import json
-        url = "http://122.51.92.130:3000/danmu/get"
-        danmuBase = requests.get(url=url, params={"username": username.encode('utf8'),
-                                                "password": password.encode('utf8')}, timeout=5).text
-        danmuBase = json.loads(danmuBase)
-        status = danmuBase["status"]
-        danmuBase = danmuBase["data"]
-        danmulist = []
-        for i in danmuBase:
-            list1 = [i, []]
-            for j in danmuBase[i]:
-                list1[1].append(j)
-            danmulist.append(list1)
-
-    "[status]"
-    $ a = 0
-    while(True):
-        $ b = danmulist[a]
-        hide screen showdanmu
-        show screen showdanmu(b[1])
-        "[b[0]]"
-        $ a += 1
-    window hide(None)
-    call screen showdanmu
-
-screen showdanmu(obj):
-    vbox:
-        spacing 10
-        text "[obj]":
-            color "#fff"
-        for i in obj:
-            text "[i]":
-                color "#fff"
+    show blue
+    $ node.get()
+    $ danmu.start()
+    show screen danmu_screen
+    "好像是东三步，南五步，从那里90度方向向左走十七步，"
+    "在那个地方向左或右，选择自己喜欢的方向540度旋转，"
+    "在那时利用1至9的数字相乘至801，"
+    "然后用40除801的数用四舍五入的方式变成整数前进，"
+    "从那里向左270度旋转后，前进三步退后两步反复五遍动作后来到的地方是藏着钥匙的"
+    $ danmu.Clear()

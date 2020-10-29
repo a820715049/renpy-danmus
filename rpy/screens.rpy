@@ -92,9 +92,11 @@ style frame:
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#say
 
+define danmu_screen_value = True
 screen say(who, what):
     style_prefix "say"
-
+    if danmu_screen_value:
+        timer 0.01 action Function(danmu.Show)
     window:
         id "window"
 
@@ -106,12 +108,32 @@ screen say(who, what):
                 text who id "who"
 
         text what id "what"
-
+    vbox:
+        xalign 0.95
+        yalign 0.95
+        if danmu.History() and danmu_screen_value:
+            textbutton "发射弹幕":
+                text_color "#fff"
+                text_size 32
+                text_outlines [( absolute(1), "#666", absolute(0), absolute(0) )]
+                action Show('input_screen')
+        if danmu_screen_value:
+            textbutton "关闭弹幕":
+                text_color "#fff"
+                text_size 32
+                text_outlines [( absolute(1), "#666", absolute(0), absolute(0) )]
+                action [Hide('danmu_screen'), Function(danmu.Clear), SetVariable("danmu_screen_value", False)]
+        else:
+            textbutton "开启弹幕":
+                text_color "#fff"
+                text_size 32
+                text_outlines [( absolute(1), "#666", absolute(0), absolute(0) )]
+                action [Show('danmu_screen'), SetVariable("danmu_screen_value", True)]
 
     ## 如果有侧边图像，会将其显示在文本之上。请不要在手机界面下显示这个，因为没
     ## 有空间。
-    if not renpy.variant("small"):
-        add SideImage() xalign 0.0 yalign 1.0
+    # if not renpy.variant("small"):
+    #     add SideImage() xalign 0.0 yalign 1.0
 
 
 ## 通过 Character 对象使名称框可用于样式化。
