@@ -7,10 +7,10 @@ init python:
     class NodeClass(object):
         def __init__(self):
             # 基础账号密码
-            self.username = "test"
+            self.username = "datou"
             self.password = "000"
-            # 服务器地址
-            self.comurl = "http://122.51.92.130:3000/"
+            # 服务器地址更改！
+            self.comurl = "http://81.69.241.195:3000/"
             # 获取ip地址
             self.hostname = socket.gethostname()
             try:
